@@ -7,7 +7,8 @@ import hydra
 import torch
 from omegaconf import DictConfig
 from tqdm import tqdm
-
+import sys
+sys.path.insert(1, '/home/ildefons/concept/RotatingFeatures')
 from codebase.utils import data_utils, model_utils, utils
 
 
@@ -104,10 +105,18 @@ def validate_or_test(
     model.train()
 
 
-@hydra.main(config_path="config", config_name="config")
-def my_main(opt: DictConfig) -> None:
-    opt = utils.parse_opt(opt)
+#@hydra.main(config_path="config", config_name="config")
+def my_main():#(opt: DictConfig) -> None:
+    #opt = utils.parse_opt(opt)
 
+    #print(opt)
+    import ast
+    from omegaconf import OmegaConf
+    aux=ast.literal_eval("{'seed': 1, 'input': {'batch_size': 64, 'dino_processed': False, 'dataset': 0, 'load_path': 'datasets/RotatingFeatures_4Shapes', 'file_name': '4Shapes', 'image_size': [32, 32], 'channel': 1, 'num_objects_per_img': 4}, 'training': {'val_idx': 0, 'learning_rate': 0.001, 'learning_rate_schedule': 1, 'warmup_steps': 500, 'weight_decay': 0, 'gradient_clip': 0.1, 'print_idx': 5000, 'steps': 100000}, 'evaluation': {'magnitude_mask_threshold': 0.1, 'mask_overlap': 1}, 'model': {'hidden_dim': 32, 'linear_dim': 64, 'rotation_dimensions': 8}, 'cwd': '/home/ildefons/concept/RotatingFeatures'}")
+    opt=OmegaConf.create(aux)
+    print(opt)
+    #aux=ast.literal_eval("{'seed': 1}")#", \"input\": {\"batch_size\": 64, \"dino_processed\": False, \"dataset\": 0, \"load_path\": \"datasets/RotatingFeatures_4Shapes\", \"file_name\": \"4Shapes\", \"image_size\": [32, 32], \"channel\": 1, \"num_objects_per_img\": 4}, \"training\": {\"val_idx\": 0, \"learning_rate\": 0.001, \"learning_rate_schedule\": 1, \"warmup_steps\": 500, \"weight_decay\": 0, \"gradient_clip\": 0.1, \"print_idx\": 5000, \"steps\": 100000}, \"evaluation\": {\"magnitude_mask_threshold\": 0.1, \"mask_overlap\": 1}, \"model\": {\"hidden_dim\": 32, \"linear_dim\": 64, \"rotation_dimensions\": 8}, \"cwd\": \"/home/ildefons/concept/RotatingFeatures\"}")
+    print(opt)
     # Initialize model and optimizer.
     model, optimizer = model_utils.get_model_and_optimizer(opt)
 

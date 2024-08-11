@@ -14,7 +14,7 @@ class ConvEncoder(nn.Module):
             opt (DictConfig): Configuration options.
         """
         super().__init__()
-
+        print("opt.input:",opt.input)
         self.channel_per_layer = [
             opt.input.channel,
             opt.model.hidden_dim,
